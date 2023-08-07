@@ -1,0 +1,83 @@
+<!--------------------------------------
+NAVBAR
+--------------------------------------->
+<style type="text/css">
+    .dropdown{
+        position: relative;
+    }
+
+    .dropdown-menu{
+        position: absolute;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 120px;
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+         display: block;
+    }
+</style>
+<nav class="topnav navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}"><strong>BlogifyMe</strong></a>
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarColor02" >
+            <ul class="navbar-nav mr-auto d-flex align-items-center">
+                {% for cat in category %}
+                    {% if forloop.counter < 4 %}
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'catagory' cat.slug %}">{{ cat }}</a>
+                        </li>
+                    {% endif %}
+
+                {% endfor %}
+
+                <li class="nav-item">
+                    <div class="dropdown nav-link">
+                        <button class="dropbtn" style="border: none; background-color: white;"><span class="badge badge-secondary"> More Categories </span></button>
+                        <div class="dropdown-content">
+                            {% for cat in category %}
+                                {% if forloop.counter > 3 %}
+                                  <a class="nav-link" href="{% url 'catagory' cat.slug %}">{{cat}}</a>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                        </div>
+                        </li>
+                    
+                </li>
+                <li>
+                    <form class="form-inline form-control-sm" method="GET" action="{% url 'search' %}">
+                        <input class="form-control form-control-sm mr-sm-1" id="form1" value="{{ search }}" type="search" name='q' placeholder="Search" aria-label="Search" required>
+                        <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"> <i class="fa fa-search"></i></button>
+                      </form>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto d-flex align-items-center">
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard </a> 
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a>
+                </li>
+                {% else %}
+                <li class="nav-item highlight">
+                    <a class="nav-link" href="{% url 'login' %}"> Login Now </a>
+                    
+                </li>
+ 
+
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    </nav>
+    <!-- End Navbar -->
